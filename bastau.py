@@ -11,10 +11,9 @@ import config
 import dbworker
 from database import SQLight
 from database import MySQL
-# Open spreadsheet and then workseet
-#db = SQLight(constants.db_name)
 
 logger = telebot.logger
+
 telebot.logger.setLevel(logging.INFO)
 
 bot = telebot.TeleBot(constants.token)
@@ -40,7 +39,7 @@ def phone_number(message):
 	#mysql_db = MySQL()
 	db = SQLight()
 	print(phone_number)
-	#exists = mysql_db.select_users(phone_number) 
+	#exists = mysql_db.select_users(phone_number) # Uncomment if needed 
 	exists = True
 	if (exists):
 		if not db.check_user_exists(phone_number):
@@ -50,7 +49,6 @@ def phone_number(message):
 		row_2 = [telebot.types.InlineKeyboardButton("Қабілетімді анықтағым келеді",callback_data="salaЖоқ")]# ozgertu bot
 		ia_zhok.row(*row_1)
 		ia_zhok.row(*row_2)
-		#if phone_number == '+77759839537':
 		bot.send_message(message.from_user.id,"<a href='https://www.youtube.com/watch?v=OWJlNyZx08E'>Сала таңдауға жалпы шолу</a>",parse_mode = "HTML",reply_markup=ia_zhok)
 		return
 	bot.send_message(message.from_user.id,"<b>Кешіріңіз, сіз біздің базада тіркелмегенсіз.</b>",parse_mode = "HTML")
@@ -60,8 +58,6 @@ def phone_number(message):
 @bot.callback_query_handler(func=lambda call: call.data[:4] == 'sala')
 def Ia_Jok(call):
 	zhauap =  call.data[4:]
-	#print(call.message)
-	#print(call.message.message_id)
 	db = SQLight()
 	reply_markup = telebot.types.ReplyKeyboardRemove()
 	if zhauap == 'Бар':
@@ -75,10 +71,8 @@ def Ia_Jok(call):
 	row_1 = [telebot.types.InlineKeyboardButton(text = "Саламды анықтағым келеді", callback_data = '#')]
 	markup.row(*row_1)
 	bot.send_message(call.from_user.id, "<a href='https://www.youtube.com/watch?v=uWRvrdOyBXA'>Салам бар, бірақ өзім білмеймін</a>", parse_mode = "HTML",reply_markup = markup)
-	#bot.send_message(call.from_user.id, "<b>Саламды анықтағым келеді</b>", parse_mode = "HTML",reply_markup = reply_markup) #, reply_markup=ia_menu())
 	dbworker.set_state(call.from_user.id, config.States.kirispe_pikir.value)
-	#bot.register_next_step_handler(msg, kirispe_pikir)
-
+	
 @bot.callback_query_handler(func=lambda call: dbworker.get_current_state(call.from_user.id) == config.States.kirispe_pikir.value)
 def kirispe_pikir(call):
 	bot.answer_callback_query(call.id, text="Күте тұрыңыз...")
@@ -212,7 +206,6 @@ def zhukteu(call):
 		row_0 = [telebot.types.InlineKeyboardButton(text="Аттың төрт аяғы", callback_data="attyn_tort_aiyagy")] #url na pdf
 		row_1 = [telebot.types.InlineKeyboardButton(text="Сала таңдау шеңбері", callback_data="tandau_shenberi")] #url + url
 		row_2 = [telebot.types.InlineKeyboardButton(text="Сала таңдау таблицасы", callback_data="tandau_tablicasy")]#url="https://drive.google.com/file/d/183M8k1QsRa230A5vldEW-KWkOzztOcPQ/view?usp=sharing")]
-		#row_3 = [telebot.types.InlineKeyboardButton(text="Команда жинау", url="https://www.youtube.com/watch?v=pU-S0wf0ATo")] #youtube
 		row_3 = [telebot.types.InlineKeyboardButton(text="Чек лист", callback_data="check_list")]
 		row_4 = [telebot.types.InlineKeyboardButton(text="Сала таңдау презентациясы", callback_data="tandau_prezentaciasy")] #url na tablicu
 		row_5 = [telebot.types.InlineKeyboardButton(text="Сала таңдау теориясы", callback_data="tandau_teoriasy")] #url + url
@@ -221,13 +214,6 @@ def zhukteu(call):
 		row_8 = [telebot.types.InlineKeyboardButton(text="БМ кейстар", url="https://drive.google.com/drive/folders/1JaGXEU8Ki-ELb4Yr8qQgSNvgwZxmdqrY?usp=sharing")]
 		row_9 = [telebot.types.InlineKeyboardButton(text="Эксперт топ", callback_data="zhukteuexpert")]
 		
-		#row_9 = [telebot.types.InlineKeyboardButton(text="ББ Сала таңдау", url="https://www.youtube.com/playlist?list=PLEmSUMWkSkfmOpxPo0oeaRyN7v__eWkB1")]
-		#row_9 = [telebot.types.InlineKeyboardButton(text="ББ Сала таңдау", url="https://www.youtube.com/playlist?list=PLEmSUMWkSkfmOpxPo0oeaRyN7v__eWkB1")]
-		#
-		#
-		#
-		#
-		#
 		markup.row(*row_0)
 		markup.row(*row_1)
 		markup.row(*row_2)
@@ -238,8 +224,6 @@ def zhukteu(call):
 		markup.row(*row_7)
 		markup.row(*row_8)
 		markup.row(*row_9)
-		#markup.row(*row_10)
-
 		bot.send_message(call.from_user.id, 'Ақпараттар...', reply_markup = markup)
 		#return
 	if text == 'expert':
@@ -329,13 +313,6 @@ def zhukteu(call):
 		row_32 = [telebot.types.InlineKeyboardButton(text="Дубайлық бизнесмен | Кілеммен айналысып бастадым", url="https://youtu.be/wuR-WiOqKgg")]
 		row_33 = [telebot.types.InlineKeyboardButton(text="Құрылыс және аяқ киім саудасы", url="https://youtu.be/MbugCojYJUM")]
 		
-
-
-
-
-
-		#row_kelesi_kadam = [telebot.types.InlineKeyboardButton(text="Келесі қадамға өту", callback_data = 'kadam_3')]
-
 		markup.row(*row_1)
 		markup.row(*row_2)
 		markup.row(*row_3)
@@ -370,7 +347,6 @@ def zhukteu(call):
 		markup.row(*row_31)
 		markup.row(*row_32)
 		markup.row(*row_33)
-		#markup.row(*row_kelesi_kadam)
 		bot.send_message(call.from_user.id, '<b>Талқылар...</b>',parse_mode = 'HTML', reply_markup = markup)
 
 
@@ -380,7 +356,5 @@ def text_message(message):
 		db = SQLight()
 		db.get_excel(message.from_user.id)
 		return
-
-# Сізге Қандай идея келді?
 bot.remove_webhook()
 bot.polling(True)
